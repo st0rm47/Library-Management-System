@@ -1,3 +1,4 @@
+#Library Management System
 
 #Book Class
 class Book:
@@ -7,14 +8,7 @@ class Book:
         self.author = author
         self.ISBN = ISBN
         self.availability = availability
-    
-    # #Method to initialize the book
-    # def initialize_book(self, title, author, ISBN, availability):
-    #     self.title = title
-    #     self.author = author
-    #     self.ISBN = ISBN
-    #     self.availability = availability
-        
+            
     #Method to mark book as borrowed or returned
     def borrow_book(self):
         self.availability = False
@@ -27,12 +21,8 @@ class Book:
         print("Title: ", self.title)
         print("Author: ", self.author)
         print("ISBN: ", self.ISBN)
-        if self.availability == True:
-            print("Availability: Available")
-        else:
-            print("Availability: Borrowed")  
+        print("Availability: ", "Available" if self.availability else "Not Available")
     
-
 #Member Class
 class Member:
     #Constructor
@@ -40,12 +30,6 @@ class Member:
         self.name = name
         self.member_id = member_id
         self.phone_number = phone_number
-    
-    # #Method to initialize the member
-    # def initialize_member(self, name, member_id, phone_number):
-    #     self.name = name
-    #     self.member_id = member_id
-    #     self.phone_number = phone_number
     
     #Method to display the data of the member
     def display_member(self):
@@ -56,9 +40,9 @@ class Member:
 #Library Class 
 class Library:
     #Constructor
-    def __init__(self,books,members):
-        self.books = books
-        self.members = members
+    def __init__(self):
+        self.books = []
+        self.members = []
     
     #Method to add a book to the library
     def add_book(self,book):
@@ -69,8 +53,10 @@ class Library:
         for book in self.books:
             if book.ISBN == ISBN:
                 self.books.remove(book)
-                print("Book Removed")
-        print("Book not found")    
+                print(f"{book.title} Removed")
+                break
+            else:
+                print(f"{book.title} not found")    
         
     #Method to add new member to the library
     def add_member(self,member):
@@ -81,8 +67,10 @@ class Library:
         for member in self.members:
             if member.member_id == member_id:
                 self.members.remove(member)
-                print("Member Removed")
-        print("Member not found") 
+                print(f"{member.name} Removed")
+                break
+            else:
+                print(f"{member.name} not found") 
                 
     #Method to allow a member to borrow a book using member id and ISBN number checking the availability of the book
     def borrow_book(self,member_id,ISBN):
@@ -90,13 +78,17 @@ class Library:
             if member.member_id == member_id:
                 for book in self.books:
                     if book.ISBN == ISBN:
-                        if book.availability == True:
+                        if book.availability:
                             book.borrow_book()
-                            print("Book is Borrowed")
+                            print(f"{member.name} borrowed {book.title}")
+                            break
                         else:
-                            print("Book is not Available")
-                print("Book not found")
-        print("Member not found")
+                            print(f"{book.title} is not Available")
+                            break
+                    else:
+                        print("Book not found")
+            else:
+                print("Member not found")
         
     #Method to allow a member to return a book using member id and ISBN number
     def return_book(self,member_id,ISBN):
@@ -104,13 +96,17 @@ class Library:
             if member.member_id == member_id:
                 for book in self.books:
                     if book.ISBN == ISBN:
-                        if book.availability == False:
+                        if not book.availability:
                             book.return_book()
-                            print("Book is Returned")
+                            print(f"{member.name} returned {book.title}")
+                            break
                         else:
-                            print("Book is not Borrowed")
-                print("Book not found")
-        print("Member not found")
+                            print(f"{book.title} is not Borrowed")
+                            break
+                    else:
+                        print("Book not found")
+            else:
+                print("Member not found")
     
     #Method to display all books of Library
     def display_book(self):
@@ -125,33 +121,30 @@ class Library:
 #Main Function
 def main():
     #Creating a list of books and members
-    books = []
-    members = []
+    library = Library()
     
     # switch case options for adding/removing books, adding/removing members, 
     # borrowing/returning books and displaying books/members
-    print("1. Add Book")
-    print("2. Remove Book")
-    print("3. Add Member")
-    print("4. Remove Member")
-    print("5. Borrow Book")
-    print("6. Return Book")
-    print("7. Display Books")
-    print("8. Display Members")
-    print("9. Exit")
-    
-    #Creating a library object
-    library = Library(books,members)
-    
-    #To keep running until the user exits
     while 1:
-        option = int(input("Enter the option: "))
+        print("\nLibrary Management System")
+        print("=========================")
+        print("1. Add Book")
+        print("2. Remove Book")
+        print("3. Add Member")
+        print("4. Remove Member")
+        print("5. Borrow Book")
+        print("6. Return Book")
+        print("7. Display Books")
+        print("8. Display Members")
+        print("9. Exit")
+        
+        option = int(input("\nEnter the option: \n"))
         match option:
             case 1:
                 title = input("Enter the title of the book: ")
                 author = input("Enter the author of the book: ")
                 ISBN = input("Enter the ISBN number of the book: ")
-                availability = input("Enter the availability of the book: ")                
+                availability = input("Enter the availability of the book(True/False): ")                
                 book = Book(title,author,ISBN,availability)
                 library.add_book(book)
             case 2:
