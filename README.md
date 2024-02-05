@@ -39,5 +39,5 @@ The project includes a set of unit tests written using pytest to ensure the func
 
 ## License
 
-                           This project is proudly created by Subodh Ghimire.
+                              This project is proudly created by Subodh Ghimire.
 
